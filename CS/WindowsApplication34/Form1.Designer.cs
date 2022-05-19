@@ -28,7 +28,6 @@ namespace WindowsApplication34
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.pivotGridControl1 = new DevExpress.XtraPivotGrid.PivotGridControl();
             ((System.ComponentModel.ISupportInitialize)(this.pivotGridControl1)).BeginInit();
             this.SuspendLayout();
@@ -38,6 +37,7 @@ namespace WindowsApplication34
             this.pivotGridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pivotGridControl1.Location = new System.Drawing.Point(0, 0);
             this.pivotGridControl1.Name = "pivotGridControl1";
+            this.pivotGridControl1.OptionsData.DataProcessingEngine = DevExpress.XtraPivotGrid.PivotDataProcessingEngine.Optimized;
             this.pivotGridControl1.Size = new System.Drawing.Size(602, 313);
             this.pivotGridControl1.TabIndex = 0;
             this.pivotGridControl1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pivotGridControl1_MouseMove);

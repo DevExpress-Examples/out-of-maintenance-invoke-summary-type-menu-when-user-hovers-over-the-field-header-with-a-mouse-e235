@@ -23,15 +23,15 @@ Namespace WindowsApplication34
 			pivotGridControl1.DataSource = CreateTable(20)
 			AddHandler pivotGridControl1.PopupMenuShowing, AddressOf pivotGridControl1_PopupMenuShowing
 
-			pivotGridControl1.Fields.Add("Type", DevExpress.XtraPivotGrid.PivotArea.RowArea)
-			pivotGridControl1.Fields.Add("Product", DevExpress.XtraPivotGrid.PivotArea.RowArea)
-			Dim fieldYear As New PivotGridField("Date", PivotArea.ColumnArea)
+			pivotGridControl1.Fields.AddDataSourceColumn("Type", DevExpress.XtraPivotGrid.PivotArea.RowArea)
+			pivotGridControl1.Fields.AddDataSourceColumn("Product", DevExpress.XtraPivotGrid.PivotArea.RowArea)
+			Dim fieldYear As New PivotGridField("", PivotArea.ColumnArea)
+			fieldYear.DataBinding = New DataSourceColumnBinding("Date", PivotGroupInterval.DateYear)
 			fieldYear.Name = "FieldYear"
 			fieldYear.Caption = fieldYear.Name
-			fieldYear.GroupInterval = PivotGroupInterval.DateYear
-			pivotGridControl1.Fields.AddRange(New PivotGridField() { fieldYear })
+			pivotGridControl1.Fields.AddRange(New PivotGridField() {fieldYear})
 
-			Dim dataField As PivotGridField = pivotGridControl1.Fields.Add("Number", DevExpress.XtraPivotGrid.PivotArea.DataArea)
+			Dim dataField As PivotGridField = pivotGridControl1.Fields.AddDataSourceColumn("Number", DevExpress.XtraPivotGrid.PivotArea.DataArea)
 			dataField.Options.AllowRunTimeSummaryChange = True
 
 		End Sub
@@ -47,26 +47,8 @@ Namespace WindowsApplication34
 						i += 1
 					End If
 				Loop
-
-				Dim displayType As New DXSubMenuItem("SummaryDisplayType")
-				e.Menu.Items.Add(displayType)
-
-				Dim curentSummaryDisplayType As String = System.Enum.GetName(GetType(PivotSummaryDisplayType), e.Field.SummaryDisplayType)
-				For Each str As String In System.Enum.GetNames(GetType(PivotSummaryDisplayType))
-					Dim item As New DXMenuCheckItem(str, curentSummaryDisplayType = str)
-					AddHandler item.Click, AddressOf ItemClick
-					item.Tag = e.Field
-					displayType.Items.Add(item)
-				Next str
 			End If
 		End Sub
-
-		Private Sub ItemClick(ByVal sender As Object, ByVal e As EventArgs)
-			Dim item As DXMenuItem = TryCast(sender, DXMenuItem)
-			Dim field As PivotGridField = TryCast(item.Tag, PivotGridField)
-			field.SummaryDisplayType = CType(System.Enum.Parse(GetType(PivotSummaryDisplayType), item.Caption), PivotSummaryDisplayType)
-		End Sub
-
 
 		Private Function CreateTable(ByVal RowCount As Integer) As DataTable
 			Dim tbl As New DataTable()

@@ -25,15 +25,15 @@ namespace WindowsApplication34
             pivotGridControl1.DataSource = CreateTable(20);
             pivotGridControl1.PopupMenuShowing +=new PopupMenuShowingEventHandler(pivotGridControl1_PopupMenuShowing); 
 
-            pivotGridControl1.Fields.Add("Type", DevExpress.XtraPivotGrid.PivotArea.RowArea);
-            pivotGridControl1.Fields.Add("Product", DevExpress.XtraPivotGrid.PivotArea.RowArea);
-            PivotGridField fieldYear = new PivotGridField("Date", PivotArea.ColumnArea);
+            pivotGridControl1.Fields.AddDataSourceColumn("Type", DevExpress.XtraPivotGrid.PivotArea.RowArea);
+            pivotGridControl1.Fields.AddDataSourceColumn("Product", DevExpress.XtraPivotGrid.PivotArea.RowArea);
+            PivotGridField fieldYear = new PivotGridField("", PivotArea.ColumnArea);
+            fieldYear.DataBinding = new DataSourceColumnBinding("Date", PivotGroupInterval.DateYear);
             fieldYear.Name = "FieldYear";
             fieldYear.Caption = fieldYear.Name;
-            fieldYear.GroupInterval = PivotGroupInterval.DateYear;
             pivotGridControl1.Fields.AddRange(new PivotGridField[] { fieldYear });
 
-            PivotGridField dataField = pivotGridControl1.Fields.Add("Number", DevExpress.XtraPivotGrid.PivotArea.DataArea);
+            PivotGridField dataField = pivotGridControl1.Fields.AddDataSourceColumn("Number", DevExpress.XtraPivotGrid.PivotArea.DataArea);
             dataField.Options.AllowRunTimeSummaryChange = true;
 
         }
@@ -51,28 +51,8 @@ namespace WindowsApplication34
                     else
                         i++;                    
                 }
-
-                DXSubMenuItem displayType = new DXSubMenuItem("SummaryDisplayType");
-                e.Menu.Items.Add(displayType);
-
-                string curentSummaryDisplayType = Enum.GetName(typeof(PivotSummaryDisplayType), e.Field.SummaryDisplayType);
-                foreach (string str in Enum.GetNames( typeof(PivotSummaryDisplayType)) )
-                {
-                    DXMenuCheckItem item = new DXMenuCheckItem(str, curentSummaryDisplayType == str);
-                    item.Click += new EventHandler(ItemClick);
-                    item.Tag = e.Field;
-                    displayType.Items.Add(item);
-                }
             }                
         }
-
-        void ItemClick(object sender, EventArgs e)
-        {
-            DXMenuItem item = sender as DXMenuItem;
-            PivotGridField field = item.Tag as PivotGridField;
-            field.SummaryDisplayType = (PivotSummaryDisplayType)Enum.Parse(typeof(PivotSummaryDisplayType), item.Caption);
-        }
-
 
         private DataTable CreateTable(int RowCount)
         {
